@@ -46,6 +46,125 @@ section{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction
 .reveal{opacity:0;transform:translateY(38px);transition:opacity .8s ease,transform .8s ease;}
 .reveal.visible{opacity:1;transform:translateY(0);}
 
+/* ══ 3D SYSTEM ══ */
+/* All tilt-able cards get perspective from their parent */
+.tilt-wrap{perspective:900px;transform-style:preserve-3d;}
+.tilt-card{
+  transform-style:preserve-3d;
+  transition:transform .12s ease, box-shadow .12s ease;
+  will-change:transform;
+  position:relative;
+}
+/* The raised inner layer that pops forward */
+.tilt-card .tilt-inner{
+  transform:translateZ(22px);
+  transition:transform .12s ease;
+  position:relative;
+  z-index:2;
+}
+/* Deep shadow that responds to tilt */
+.tilt-card::after{
+  content:'';
+  position:absolute;
+  inset:10px;
+  border-radius:inherit;
+  background:rgba(0,0,0,.22);
+  filter:blur(18px);
+  transform:translateZ(-30px);
+  transition:all .12s ease;
+  z-index:-1;
+}
+/* 3D shine overlay */
+.tilt-shine{
+  position:absolute;inset:0;
+  border-radius:inherit;
+  background:radial-gradient(circle at 50% 50%, rgba(255,255,255,.18) 0%, transparent 65%);
+  pointer-events:none;
+  z-index:10;
+  opacity:0;
+  transition:opacity .2s;
+}
+.tilt-card:hover .tilt-shine{opacity:1;}
+
+/* Chess board 3D */
+#chess-3d-wrap{
+  perspective:600px;
+  transform-style:preserve-3d;
+}
+.chess-board{
+  transform-style:preserve-3d;
+  transform:rotateX(8deg);
+  transition:transform .3s ease;
+  box-shadow:0 30px 60px #0005, 0 6px 0 #5a3418, 0 10px 0 #3d2010 !important;
+}
+.chess-board:hover{transform:rotateX(4deg) scale(1.02);}
+.cell{
+  transform-style:preserve-3d;
+  transition:background .2s, transform .15s;
+}
+.cell:hover{transform:translateZ(8px) scale(1.05);}
+.cell.selected{transform:translateZ(12px) scale(1.05) !important;}
+.cell.highlight{transform:translateZ(5px);}
+
+/* Book 3D */
+.book-wrapper{
+  transform-style:preserve-3d;
+  transform:perspective(800px) rotateY(-4deg) rotateX(2deg);
+  transition:transform .4s ease;
+}
+.book-wrapper:hover{transform:perspective(800px) rotateY(0deg) rotateX(0deg) scale(1.02);}
+
+/* Travel cards 3D */
+.travel-card{
+  transform-style:preserve-3d;
+  transform:perspective(600px) translateZ(0);
+}
+
+/* Reason cards 3D */
+.rc{transform-style:preserve-3d;}
+
+/* Star popup 3D */
+.popup{transform-style:preserve-3d;}
+
+/* Bloom card 3D */
+.bloom-card{
+  transform-style:preserve-3d;
+  transform:perspective(700px) rotateX(0deg);
+}
+
+/* Paper 3D */
+.paper{
+  transform-style:preserve-3d;
+  transform:perspective(1000px) rotateX(1deg) rotateY(-1deg);
+  transition:transform .4s ease;
+}
+.paper:hover{transform:perspective(1000px) rotateX(0deg) rotateY(0deg);}
+
+/* Drawing frame 3D */
+.df{transform-style:preserve-3d;}
+
+/* Parallax photo 3D depth layers */
+.pp{transform-style:preserve-3d;}
+
+/* Horror TV 3D */
+.horror-tv{
+  transform-style:preserve-3d;
+  transform:perspective(700px) rotateX(3deg);
+  transition:transform .4s ease;
+}
+.horror-tv:hover{transform:perspective(700px) rotateX(0deg) rotateY(-2deg);}
+
+/* Hand moment card 3D */
+.hand-moment{transform-style:preserve-3d;}
+
+/* Section headers float */
+.section-header{
+  transform-style:preserve-3d;
+}
+.section-title{
+  text-shadow: 0 4px 12px rgba(0,0,0,.15);
+}
+
 /* ══ HERO ══ */
 #hero{background:linear-gradient(170deg,#1e1015 0%,#2e1820 55%,#1a1010 100%);overflow:hidden;text-align:center;}
 #hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 30% 30%,#c2637a18 0%,transparent 60%),radial-gradient(ellipse 50% 60% at 80% 70%,#d4a85318 0%,transparent 60%);}
@@ -66,27 +185,68 @@ section{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction
 @keyframes hUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
 @keyframes fIn{from{opacity:0}to{opacity:1}}
 
-/* ══ CONSTELLATION ══ */
-#constellation{background:#06030e;overflow:hidden;min-height:100vh;}
-#star-canvas{position:absolute;inset:0;width:100%;height:100%;}
-.const-ui{position:relative;z-index:10;text-align:center;display:flex;flex-direction:column;align-items:center;width:100%;}
-.star-board{position:relative;width:min(680px,94vw);height:min(400px,58vw);min-height:260px;}
-.sp{position:absolute;transform:translate(-50%,-50%);cursor:pointer;z-index:5;}
-.sg{width:13px;height:13px;border-radius:50%;background:radial-gradient(circle,#fff 0%,var(--gold-light) 40%,transparent 70%);box-shadow:0 0 7px 2px #f0d09077,0 0 18px 3px #f0d09033;transition:.3s;animation:sPulse 2.5s ease-in-out infinite;}
-.sp:nth-child(2) .sg{animation-delay:.4s}.sp:nth-child(3) .sg{animation-delay:.9s}.sp:nth-child(4) .sg{animation-delay:1.3s}.sp:nth-child(5) .sg{animation-delay:1.8s}.sp:nth-child(6) .sg{animation-delay:.6s}.sp:nth-child(7) .sg{animation-delay:1.1s}
-@keyframes sPulse{0%,100%{transform:scale(1);opacity:.75}50%{transform:scale(1.7);opacity:1}}
-.sp:hover .sg{transform:scale(2.4)!important;box-shadow:0 0 18px 7px #f0d09099!important;}
-.sl{position:absolute;top:19px;left:50%;transform:translateX(-50%);font-family:'Dancing Script',cursive;font-size:11px;color:var(--gold-light);white-space:nowrap;opacity:.65;pointer-events:none;}
-.popup{display:none;position:absolute;background:rgba(20,8,18,.96);border:1px solid #c2637a55;border-radius:14px;padding:16px 20px;width:210px;box-shadow:0 16px 50px #000a;z-index:20;backdrop-filter:blur(12px);pointer-events:none;}
-.popup.ab{bottom:28px;left:50%;transform:translateX(-50%);}
-.popup.bl{top:28px;left:50%;transform:translateX(-50%);}
-.popup.le{right:28px;top:50%;transform:translateY(-50%);}
-.popup.ri{left:28px;top:50%;transform:translateY(-50%);}
-.sp:hover .popup{display:block;animation:pIn .3s cubic-bezier(.175,.885,.32,1.275);}
-@keyframes pIn{from{opacity:0;transform:translateX(-50%) scale(.8)}to{opacity:1;transform:translateX(-50%) scale(1)}}
-.popup h4{font-family:'Playfair Display',serif;font-size:14px;color:var(--rose);margin-bottom:7px;font-style:italic;}
-.popup p{font-size:12px;color:#f5dce4cc;line-height:1.7;font-style:italic;}
-.const-cap{margin-top:28px;font-size:clamp(14px,2vw,17px);font-style:italic;color:#c2637a77;}
+/* ══ CONSTELLATION / NIGHT SKY ══ */
+#constellation{
+  background:#03020a;
+  overflow:hidden;
+  min-height:100vh;
+  padding:0;
+  display:block;
+}
+#sky-canvas{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  display:block;
+}
+.sky-ui{
+  position:relative;z-index:10;
+  min-height:100vh;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:80px 20px;
+  pointer-events:none;
+}
+.sky-ui .section-header{pointer-events:none;}
+/* Memory cards that appear on star click */
+.sky-card{
+  display:none;
+  position:fixed;
+  background:rgba(12,4,18,.96);
+  border:1px solid #c2637a66;
+  border-radius:18px;
+  padding:22px 26px;
+  width:min(260px,80vw);
+  box-shadow:0 20px 60px #000b,0 0 0 1px #c2637a22;
+  z-index:500;
+  backdrop-filter:blur(16px);
+  pointer-events:all;
+  animation:skyCardIn .4s cubic-bezier(.175,.885,.32,1.275);
+  transform:translate(-50%,-110%);
+}
+.sky-card.active{display:block;}
+@keyframes skyCardIn{from{opacity:0;transform:translate(-50%,-120%) scale(.8)}to{opacity:1;transform:translate(-50%,-110%) scale(1)}}
+.sky-card h4{
+  font-family:'Playfair Display',serif;
+  font-size:15px;color:var(--rose);
+  margin-bottom:8px;font-style:italic;
+}
+.sky-card p{font-size:13px;color:#f5dce4cc;line-height:1.7;font-style:italic;}
+.sky-card-close{
+  position:absolute;top:10px;right:14px;
+  background:none;border:none;color:#c2637a88;
+  font-size:18px;cursor:pointer;line-height:1;
+  pointer-events:all;
+}
+.sky-hint{
+  margin-top:20px;
+  font-family:'Dancing Script',cursive;
+  font-size:clamp(15px,2.5vw,19px);
+  color:#c2637a55;
+  text-align:center;
+  animation:skyHintPulse 3s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes skyHintPulse{0%,100%{opacity:.4}50%{opacity:.9}}
 
 /* ══ TYPING LETTER ══ */
 #typing-letter{background:var(--dark);overflow:hidden;}
@@ -315,25 +475,24 @@ section{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction
   <div class="scroll-cue"><span>Scroll</span><div class="scroll-line"></div></div>
 </section>
 
-<!-- ══ CONSTELLATION ══ -->
+<!-- ══ REALISTIC NIGHT SKY (Three.js WebGL) ══ -->
 <section id="constellation">
-  <canvas id="star-canvas"></canvas>
-  <div class="const-ui reveal">
-    <div class="section-header">
+  <canvas id="sky-canvas"></canvas>
+  <!-- Memory cards (shown when named stars clicked) -->
+  <div class="sky-card" id="sc0"><button class="sky-card-close" onclick="closeSkyCard()">×</button><h4>The First Message</h4><p>You typed something small. I replied. Neither of us knew what it would become. 💬</p></div>
+  <div class="sky-card" id="sc1"><button class="sky-card-close" onclick="closeSkyCard()">×</button><h4>February 9th</h4><p>This star was watching the night two strangers became something they had no word for yet. ♟️</p></div>
+  <div class="sky-card" id="sc2"><button class="sky-card-close" onclick="closeSkyCard()">×</button><h4>Your Laugh</h4><p>The first time you made me laugh I thought: I could get very used to this. 🌸</p></div>
+  <div class="sky-card" id="sc3"><button class="sky-card-close" onclick="closeSkyCard()">×</button><h4>What You Draw</h4><p>I wonder what it is like inside your head. What you see must be beautiful in there. 🎨</p></div>
+  <div class="sky-card" id="sc4"><button class="sky-card-close" onclick="closeSkyCard()">×</button><h4>The Distance</h4><p>Thousands of miles. And yet some nights it feels like you are right here. 🌍</p></div>
+  <div class="sky-card" id="sc5"><button class="sky-card-close" onclick="closeSkyCard()">×</button><h4>That Horror Night</h4><p>You reached for me through a screen. I have never felt more wanted in my life. 🤝</p></div>
+  <div class="sky-card" id="sc6"><button class="sky-card-close" onclick="closeSkyCard()">×</button><h4>What Comes Next</h4><p>One day this is a story we tell in person. Over food. Probably laughing. I cannot wait. 🌏</p></div>
+  <div class="sky-ui">
+    <div class="section-header reveal">
       <span class="section-tag" style="color:var(--gold-light)">✦ February 9th ✦</span>
       <h2 class="section-title" style="color:var(--cream)">The Night Sky<br><em>When We Found Each Other</em></h2>
       <div class="section-rule"></div>
     </div>
-    <div class="star-board">
-      <div class="sp" style="left:18%;top:22%"><div class="sg"></div><div class="sl">Rohini ✦</div><div class="popup ab"><h4>The First Message</h4><p>Somewhere under this star, you sent the first words that started everything. 💬</p></div></div>
-      <div class="sp" style="left:50%;top:12%"><div class="sg"></div><div class="sl">Ardra ✦</div><div class="popup bl"><h4>February 9th</h4><p>The universe had been planning this for a long time. A chess game. Two people. One beginning. ♟️</p></div></div>
-      <div class="sp" style="left:79%;top:28%"><div class="sg"></div><div class="sl">Jyeshtha ✦</div><div class="popup le"><h4>Your Smile</h4><p>When I first saw it, I knew — this is someone I never want to stop knowing. 🌸</p></div></div>
-      <div class="sp" style="left:33%;top:54%"><div class="sg"></div><div class="sl">Pushya ✦</div><div class="popup ab"><h4>The Artist</h4><p>A girl who draws with her whole heart. That tells you everything you need to know. 🎨</p></div></div>
-      <div class="sp" style="left:63%;top:60%"><div class="sg"></div><div class="sl">Hasta ✦</div><div class="popup ab"><h4>The Distance</h4><p>Miles apart, yet somehow closer than most people who share the same room. 🌍</p></div></div>
-      <div class="sp" style="left:11%;top:63%"><div class="sg"></div><div class="sl">Revati ✦</div><div class="popup ri"><h4>Movie Night 👻</h4><p>"Hey, can you hold my hand?" — the sweetest thing I've ever heard. 🤝</p></div></div>
-      <div class="sp" style="left:87%;top:65%"><div class="sg"></div><div class="sl">Mriga ✦</div><div class="popup le"><h4>Our Future</h4><p>Every city we'll explore. Every sunrise we haven't seen yet. All of it — ours. 🌏</p></div></div>
-    </div>
-    <p class="const-cap">Hover over the stars — each one holds a memory ✨</p>
+    <p class="sky-hint">Drag to rotate the sky · Click the glowing stars 🌟</p>
   </div>
 </section>
 
@@ -391,7 +550,7 @@ section{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction
 <section id="parallax-world" style="padding:0;display:block;min-height:100vh;">
   <div class="parallax-header reveal">
     <span class="section-tag" style="color:var(--gold-light)">✦ A World Made of You ✦</span>
-    <h2 class="section-title" style="color:var(--cream)">Move Your Cursor —<br><em>Watch Them Float</em></h2>
+    <h2 class="section-title" style="color:var(--cream)">Move Your Cursor,<br><em>Watch Them Float</em></h2>
     <div class="section-rule"></div>
   </div>
   <div class="parallax-stage" id="pStage">
@@ -403,7 +562,7 @@ section{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction
     <div class="pp" style="width:19%;left:66%;top:48%" data-d="0.05"><img src="photos/photo6.jpg" alt="" onerror="this.parentElement.style.background='linear-gradient(135deg,#2e1820,#c2637a33)';this.remove()"><div class="plabel">Radiant 🌷</div></div>
     <div class="pp" style="width:15%;left:86%;top:4%" data-d="0.07"><img src="photos/photo7.jpg" alt="" onerror="this.parentElement.style.background='linear-gradient(135deg,#1a1015,#e8647a33)';this.remove()"><div class="plabel">Joy 🌼</div></div>
   </div>
-  <p class="parallax-footer">Move your mouse — her photos float at different depths ✨</p>
+  <p class="parallax-footer">Move your mouse and watch her photos float at different depths ✨</p>
 </section>
 
 <!-- ══ FLOWER GARDEN ══ -->
@@ -442,7 +601,7 @@ section{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction
     <div class="hand-moment" id="handMoment">
       <h2>Then you said the sweetest thing...</h2>
       <div class="hand-quote"><span>💬</span><span>"Hey... can you hold my hand?"</span></div>
-      <p>Across every mile between us, you reached for me.<br>And I would give <strong>anything</strong> to have been right there,<br>hand in yours, for every single scary scene.<br><br><strong>Next movie night — I've got you. Always. 🤝</strong></p>
+      <p>Across every mile between us, you reached for me.<br>And I would give <strong>anything</strong> to have been right there,<br>hand in yours, for every single scary scene.<br><br><strong>Next movie night, I've got you. Always. 🤝</strong></p>
     </div>
   </div>
 </section>
@@ -456,10 +615,10 @@ section{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction
   </div>
   <p class="chess-intro reveal">This is how we found each other. Solve this mate-in-1 to unlock a secret message from Chris. ♟️</p>
   <div style="display:flex;flex-direction:column;align-items:center;gap:18px;">
-    <p class="chess-msg" id="chessMsg">White to move — find checkmate in 1! ♟️</p>
-    <div class="chess-board" id="chessBoard"></div>
+    <p class="chess-msg" id="chessMsg">White to move. Find checkmate in 1! ♟️</p>
+    <div id="chess-3d-wrap"><div class="chess-board" id="chessBoard"></div></div>
     <p class="chess-hint" id="chessHint">Click a white piece, then click where to move.</p>
-    <div class="chess-secret" id="chessSecret"><h3>🌹 You found it, Soren!</h3><p>Just like that move — <strong>you captured my heart in a single moment.</strong><br><br>The very first time we talked, I knew there was something rare about you. And I have been yours ever since.<br><br><span style="color:var(--gold-light);font-family:'Dancing Script',cursive;font-size:20px">Checkmate. You win. Always. 💕</span></p></div>
+    <div class="chess-secret" id="chessSecret"><h3>🌹 You found it, Soren!</h3><p>Just like that move, <strong>you captured my heart in a single moment.</strong><br><br>The very first time we talked, I knew there was something rare about you. And I have been yours ever since.<br><br><span style="color:var(--gold-light);font-family:'Dancing Script',cursive;font-size:20px">Checkmate. You win. Always. 💕</span></p></div>
   </div>
 </section>
 
@@ -474,9 +633,9 @@ section{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction
     <div class="travel-card"><span class="tf">🇯🇵</span><div class="tp">Tokyo</div><div class="td">Cherry blossoms, ramen at midnight, lost in the streets together.</div></div>
     <div class="travel-card"><span class="tf">🇫🇷</span><div class="tp">Paris</div><div class="td">Tulips from a street market, your hand in mine by the Seine.</div></div>
     <div class="travel-card"><span class="tf">🇮🇹</span><div class="tp">Tuscany</div><div class="td">Golden fields, slow mornings, drawing the countryside together.</div></div>
-    <div class="travel-card"><span class="tf">🇳🇴</span><div class="tp">Norway</div><div class="td">Northern lights and the silence of mountains — just us two.</div></div>
+    <div class="travel-card"><span class="tf">🇳🇴</span><div class="tp">Norway</div><div class="td">Northern lights and the silence of mountains, just us two.</div></div>
     <div class="travel-card"><span class="tf">🇲🇦</span><div class="tp">Morocco</div><div class="td">Colours, spice markets, a thousand things to sketch.</div></div>
-    <div class="travel-card"><span class="tf">🌏</span><div class="tp">Everywhere</div><div class="td">As long as it's with you — every single place is worth it.</div></div>
+    <div class="travel-card"><span class="tf">🌏</span><div class="tp">Everywhere</div><div class="td">As long as it's with you, every single place is worth it.</div></div>
   </div>
   <p class="travel-promise reveal"><em>"We're going to travel the world together."</em><br>That's not a dream. That's a promise.</p>
 </section>
@@ -517,34 +676,27 @@ section{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction
     <h2 class="section-title">Soren's Art<br><em>Gallery</em></h2>
     <div class="section-rule"></div>
   </div>
-  <p class="gallery-intro reveal">Every drawing you've made is a piece of your soul. This is your exhibition. 🎨</p>
-  <div class="drawings-grid reveal">
-    <div class="df" onclick="openLightbox('drawings/drawing1.jpg')"><img src="drawings/drawing1.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="dph" style="display:none"><span>🎨</span><p>Add drawing1.jpg<br>to drawings/ folder</p></div><div class="dc-label">Drawing #1 ✨</div></div>
-    <div class="df" onclick="openLightbox('drawings/drawing2.jpg')"><img src="drawings/drawing2.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="dph" style="display:none"><span>🖌️</span><p>Add drawing2.jpg<br>to drawings/ folder</p></div><div class="dc-label">Drawing #2 🌸</div></div>
-    <div class="df" onclick="openLightbox('drawings/drawing3.jpg')"><img src="drawings/drawing3.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="dph" style="display:none"><span>✏️</span><p>Add drawing3.jpg<br>to drawings/ folder</p></div><div class="dc-label">Drawing #3 🌷</div></div>
-    <div class="df" onclick="openLightbox('drawings/drawing4.jpg')"><img src="drawings/drawing4.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="dph" style="display:none"><span>🖼️</span><p>Add drawing4.jpg<br>to drawings/ folder</p></div><div class="dc-label">Drawing #4 💕</div></div>
-    <div class="df" onclick="openLightbox('drawings/drawing5.jpg')"><img src="drawings/drawing5.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="dph" style="display:none"><span>🌷</span><p>Add drawing5.jpg<br>to drawings/ folder</p></div><div class="dc-label">Drawing #5 🌼</div></div>
-    <div class="df" onclick="openLightbox('drawings/drawing6.jpg')"><img src="drawings/drawing6.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="dph" style="display:none"><span>🎭</span><p>Add drawing6.jpg<br>to drawings/ folder</p></div><div class="dc-label">Drawing #6 🎨</div></div>
-  </div>
-  <p class="gallery-note reveal">"Every time you draw, you show the world how you see it —<br>and the way you see it is beautiful." — Chris 💌</p>
+  <p class="gallery-intro reveal">You put your soul into every single piece. This is your museum. 🎨</p>
+  <div class="drawings-grid reveal" id="drawingsGrid"></div>
+  <p class="gallery-note reveal">"When you draw, the world gets to see beauty through your eyes.<br>I hope you never stop." Chris 💌</p>
 </section>
 
 <!-- ══ REASONS ══ -->
 <section id="reasons">
   <div class="section-header reveal">
     <span class="section-tag">✦ From Chris ✦</span>
-    <h2 class="section-title">Reasons I Love<br><em>Being Yours</em></h2>
+    <h2 class="section-title">Eight Things About You<br><em>Nobody Could Replace</em></h2>
     <div class="section-rule"></div>
   </div>
   <div class="reasons-grid">
-    <div class="rc reveal"><span class="ri">🎨</span><div class="rt">Your Creative Soul</div><div class="rtx">You draw with your whole heart. That passion is rare and beautiful.</div></div>
-    <div class="rc reveal"><span class="ri">🌷</span><div class="rt">Your Gentleness</div><div class="rtx">Like a tulip in the morning — soft, stunning, impossible not to love.</div></div>
-    <div class="rc reveal"><span class="ri">💬</span><div class="rt">You Talk to Me All Day</div><div class="rtx">You never let distance be an excuse. You fill every day with your words.</div></div>
-    <div class="rc reveal"><span class="ri">🎬</span><div class="rt">Our Movie Nights</div><div class="rtx">Watching in sync, laughing together — you make far away feel like right here.</div></div>
-    <div class="rc reveal"><span class="ri">🤝</span><div class="rt">How You Reach for Me</div><div class="rtx">"Can you hold my hand?" — I'll never forget that. You make me feel everything.</div></div>
-    <div class="rc reveal"><span class="ri">♟️</span><div class="rt">How We Found Each Other</div><div class="rtx">A chess game. The universe played the best move of all time.</div></div>
-    <div class="rc reveal"><span class="ri">💛</span><div class="rt">How Caring You Are</div><div class="rtx">You love deeply and honestly. That heart deserves the whole world.</div></div>
-    <div class="rc reveal"><span class="ri">🌍</span><div class="rt">Our Shared Dreams</div><div class="rtx">Every city, every adventure ahead — I want all of it with you.</div></div>
+    <div class="rc reveal"><span class="ri">🎨</span><div class="rt">The Way You Create</div><div class="rtx">Most people see the world. You translate it. Every line you draw is a small act of bravery.</div></div>
+    <div class="rc reveal"><span class="ri">🌙</span><div class="rt">You Stay Up for Me</div><div class="rtx">Time zones make it hard and you show up anyway. That kind of love is not small.</div></div>
+    <div class="rc reveal"><span class="ri">😂</span><div class="rt">Your Sense of Humour</div><div class="rtx">You make me laugh harder than anyone. In the most random moments. That is a gift.</div></div>
+    <div class="rc reveal"><span class="ri">🌷</span><div class="rt">You Notice Small Things</div><div class="rtx">Tulips. Daisies. Little details others walk past. You find beauty in the places it hides.</div></div>
+    <div class="rc reveal"><span class="ri">🤍</span><div class="rt">Your Honesty</div><div class="rtx">You say what you feel. No games. That is rarer than you know, and I trust you completely.</div></div>
+    <div class="rc reveal"><span class="ri">📱</span><div class="rt">Good Morning, Every Day</div><div class="rtx">Waking up to a message from you is the best part of any morning. Never take that for granted.</div></div>
+    <div class="rc reveal"><span class="ri">🌊</span><div class="rt">You Are Calm</div><div class="rtx">When everything feels loud, talking to you makes it quiet again. You are my reset button.</div></div>
+    <div class="rc reveal"><span class="ri">💫</span><div class="rt">You Chose Me Too</div><div class="rtx">Out of everyone in the world, we found each other on a chessboard. And you stayed. So did I.</div></div>
   </div>
 </section>
 
@@ -553,9 +705,14 @@ section{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction
   <div class="finale-inner">
     <h2 class="reveal">Happy<br><em>Birthday</em><br>Soren</h2>
     <div class="finale-flowers reveal"><span class="ff">🌷</span><span class="ff">🌼</span><span class="ff">🌸</span><span class="ff">🌼</span><span class="ff">🌷</span></div>
-    <p class="reveal">May this year bring you every colour your heart dreams of.<br>May your drawings surprise even you.<br>May the distance shrink, and the adventures begin.</p>
+    <p class="reveal">You are turning a year older today.<br>But to me, you will always be the girl<br>who showed up in a chess game and changed everything.</p>
+    <p class="reveal" style="font-size:clamp(15px,2vw,19px);color:#f5dce4aa;margin-top:0;">
+      I don't have a gift I can hand you through a screen.<br>
+      So I built this instead. Every pixel of it is yours.<br>
+      Come back to it on the days you need to feel loved.
+    </p>
     <div class="finale-hindi reveal">जन्मदिन मुबारक हो, मेरी जान 🌹<div style="font-size:14px;color:#c2637a77;font-family:'Cormorant Garamond',serif;margin-top:5px;font-style:italic">(Happy Birthday, my love)</div></div>
-    <div class="finale-from reveal">All my love, always — Chris 💌<span>♟️ February 9th → Forever</span></div>
+    <div class="finale-from reveal">Forever yours, Chris 💌<span>♟️ Feb 9th was the beginning. This is just page two.</span></div>
     <button class="confetti-btn reveal" onclick="launchConfetti()">🎉 Celebrate!</button>
   </div>
 </section>
@@ -585,41 +742,496 @@ let actx,mGain,mPlay=false;
 function buildMusic(){actx=new(window.AudioContext||window.webkitAudioContext)();mGain=actx.createGain();mGain.gain.setValueAtTime(0,actx.currentTime);mGain.connect(actx.destination);[[261.63,.12],[329.63,.09],[392,.07],[523.25,.05],[659.25,.04]].forEach(([f,g],i)=>{const o=actx.createOscillator(),gn=actx.createGain();o.type='sine';o.frequency.value=f;gn.gain.value=g;o.connect(gn);gn.connect(mGain);o.start(actx.currentTime+i*.22);});}
 function toggleMusic(){if(!actx)buildMusic();mPlay=!mPlay;document.getElementById('playBtn').textContent=mPlay?'⏸':'▶';document.getElementById('musicBars').classList.toggle('playing',mPlay);if(mPlay){if(actx.state==='suspended')actx.resume();mGain.gain.linearRampToValueAtTime(.052,actx.currentTime+1);}else mGain.gain.linearRampToValueAtTime(0,actx.currentTime+1);}
 
-/* ── STAR CANVAS ── */
-(()=>{const c=document.getElementById('star-canvas'),ctx=c.getContext('2d');function r(){c.width=c.parentElement.offsetWidth||window.innerWidth;c.height=c.parentElement.offsetHeight||window.innerHeight;}r();window.addEventListener('resize',r);const S=[];for(let i=0;i<300;i++)S.push({x:Math.random(),y:Math.random(),r:Math.random()*1.1+.2,o:Math.random()*.65+.1,sp:Math.random()*.0007+.0003});let t=0;(function loop(){t+=.016;ctx.clearRect(0,0,c.width,c.height);S.forEach(s=>{ctx.beginPath();ctx.arc(s.x*c.width,s.y*c.height,s.r,0,Math.PI*2);ctx.fillStyle=`rgba(255,255,210,${s.o*(0.65+0.35*Math.sin(t/s.sp))})`;ctx.fill();});requestAnimationFrame(loop);})();})();
+/* ── REALISTIC NIGHT SKY (Three.js WebGL) ── */
+(function initNightSky(){
+  // Load Three.js from CDN then boot
+  const s=document.createElement('script');
+  s.src='https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
+  s.onload=bootSky;
+  s.onerror=()=>console.warn('Three.js failed to load');
+  document.head.appendChild(s);
+})();
+
+// Named stars with memory card indices
+const NAMED_STARS=[
+  {name:'Rohini',  phi:0.6,  theta:0.8,  card:0, color:0xffd0a0},
+  {name:'Ardra',   phi:1.2,  theta:2.1,  card:1, color:0xa0c8ff},
+  {name:'Jyeshtha',phi:0.4,  theta:3.8,  card:2, color:0xffb0c0},
+  {name:'Pushya',  phi:1.6,  theta:1.0,  card:3, color:0xd0e8ff},
+  {name:'Hasta',   phi:1.0,  theta:4.5,  card:4, color:0xfff0a0},
+  {name:'Revati',  phi:1.8,  theta:5.2,  card:5, color:0xffc0e0},
+  {name:'Mriga',   phi:0.8,  theta:2.8,  card:6, color:0xc0ffcc},
+];
+
+function closeSkyCard(){
+  document.querySelectorAll('.sky-card').forEach(c=>c.classList.remove('active'));
+}
+
+function bootSky(){
+  const THREE=window.THREE;
+  const canvas=document.getElementById('sky-canvas');
+  if(!canvas||!THREE)return;
+
+  // ── Renderer ──
+  const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:false});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  renderer.setSize(canvas.parentElement.offsetWidth,canvas.parentElement.offsetHeight);
+  renderer.toneMapping=THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure=0.9;
+
+  // ── Scene & Camera ──
+  const scene=new THREE.Scene();
+  const camera=new THREE.PerspectiveCamera(75,canvas.width/canvas.height,0.1,2000);
+  camera.position.set(0,0,0.001); // inside the sphere
+
+  // ── Fog / atmosphere ──
+  scene.fog=new THREE.FogExp2(0x03020a,0.0006);
+
+  // ── Background gradient sphere ──
+  const bgGeo=new THREE.SphereGeometry(800,32,32);
+  const bgMat=new THREE.MeshBasicMaterial({
+    side:THREE.BackSide,
+    color:0x03020a
+  });
+  scene.add(new THREE.Mesh(bgGeo,bgMat));
+
+  // ── Aurora / nebula bands (additive quads) ──
+  function makeAurora(color,y,rotZ,opacity){
+    const geo=new THREE.PlaneGeometry(2400,400,1,1);
+    const mat=new THREE.MeshBasicMaterial({
+      color,transparent:true,opacity,
+      side:THREE.DoubleSide,depthWrite:false,
+      blending:THREE.AdditiveBlending
+    });
+    const mesh=new THREE.Mesh(geo,mat);
+    mesh.position.set(0,y,-700);
+    mesh.rotation.z=rotZ;
+    mesh.userData.baseOpacity=opacity;
+    mesh.userData.phase=Math.random()*Math.PI*2;
+    return mesh;
+  }
+  const auroras=[
+    makeAurora(0x0a2a1a,-60,-0.15,0.055),
+    makeAurora(0x1a0a30, 30, 0.1, 0.04),
+    makeAurora(0x2a0a20,-20,-0.08,0.035),
+    makeAurora(0x0a1a2a, 80, 0.2, 0.03),
+  ];
+  auroras.forEach(a=>scene.add(a));
+
+  // ── Stars geometry ──
+  const STAR_COUNT=8000;
+  const starPositions=new Float32Array(STAR_COUNT*3);
+  const starColors=new Float32Array(STAR_COUNT*3);
+  const starSizes=new Float32Array(STAR_COUNT);
+
+  const starColorPalette=[
+    new THREE.Color(1.0,0.95,0.85),   // warm white
+    new THREE.Color(0.85,0.90,1.0),   // cool blue-white
+    new THREE.Color(1.0,0.80,0.70),   // orange dwarf
+    new THREE.Color(0.90,0.95,1.0),   // blue-white hot
+    new THREE.Color(1.0,1.0,0.85),    // yellow
+    new THREE.Color(0.95,0.80,0.90),  // rose
+  ];
+
+  for(let i=0;i<STAR_COUNT;i++){
+    // Random point on sphere
+    const theta=Math.random()*Math.PI*2;
+    const phi=Math.acos(2*Math.random()-1);
+    const r=500+Math.random()*100;
+    starPositions[i*3]  =r*Math.sin(phi)*Math.cos(theta);
+    starPositions[i*3+1]=r*Math.cos(phi);
+    starPositions[i*3+2]=r*Math.sin(phi)*Math.sin(theta);
+
+    const col=starColorPalette[Math.floor(Math.random()*starColorPalette.length)];
+    starColors[i*3]  =col.r;
+    starColors[i*3+1]=col.g;
+    starColors[i*3+2]=col.b;
+
+    // Magnitude distribution: mostly small, few large
+    const mag=Math.random();
+    starSizes[i]=mag<0.96 ? 1.5+mag*2 : 4+Math.random()*6;
+  }
+
+  const starGeo=new THREE.BufferGeometry();
+  starGeo.setAttribute('position',new THREE.BufferAttribute(starPositions,3));
+  starGeo.setAttribute('color',  new THREE.BufferAttribute(starColors,3));
+  starGeo.setAttribute('size',   new THREE.BufferAttribute(starSizes,1));
+
+  const starMat=new THREE.ShaderMaterial({
+    uniforms:{time:{value:0},pixelRatio:{value:renderer.getPixelRatio()}},
+    vertexShader:`
+      attribute float size;
+      attribute vec3 color;
+      varying vec3 vColor;
+      varying float vSize;
+      uniform float time;
+      void main(){
+        vColor=color;
+        vSize=size;
+        vec4 mvPos=modelViewMatrix*vec4(position,1.0);
+        // Twinkle: subtle size oscillation per star
+        float twinkle=1.0+0.18*sin(time*2.0+position.x*0.05+position.y*0.03);
+        gl_PointSize=size*twinkle*(300.0/-mvPos.z);
+        gl_Position=projectionMatrix*mvPos;
+      }
+    `,
+    fragmentShader:`
+      varying vec3 vColor;
+      varying float vSize;
+      void main(){
+        float d=length(gl_PointCoord-vec2(0.5));
+        if(d>0.5)discard;
+        float alpha=1.0-smoothstep(0.0,0.5,d);
+        // Bloom core
+        float bloom=exp(-d*d*8.0)*0.6;
+        gl_FragColor=vec4(vColor*(alpha+bloom),alpha);
+      }
+    `,
+    transparent:true,
+    vertexColors:true,
+    blending:THREE.AdditiveBlending,
+    depthWrite:false,
+  });
+
+  const starField=new THREE.Points(starGeo,starMat);
+  scene.add(starField);
+
+  // ── Named bright stars (interactive) ──
+  const namedStarMeshes=[];
+  const namedGeo=new THREE.SphereGeometry(2.5,12,12);
+
+  NAMED_STARS.forEach((ns,i)=>{
+    const x=490*Math.sin(ns.phi)*Math.cos(ns.theta);
+    const y=490*Math.cos(ns.phi);
+    const z=490*Math.sin(ns.phi)*Math.sin(ns.theta);
+
+    // Glowing sprite using ShaderMaterial
+    const mat=new THREE.ShaderMaterial({
+      uniforms:{time:{value:0},col:{value:new THREE.Color(ns.color)}},
+      vertexShader:`
+        varying vec2 vUv;
+        void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}
+      `,
+      fragmentShader:`
+        uniform float time;
+        uniform vec3 col;
+        varying vec2 vUv;
+        void main(){
+          vec2 c=vUv-0.5;
+          float d=length(c);
+          float core=1.0-smoothstep(0.0,0.18,d);
+          float glow=exp(-d*d*8.0)*0.7*(0.8+0.2*sin(time*3.0+float(${i})));
+          float rays=0.0;
+          float angle=atan(c.y,c.x);
+          for(int k=0;k<4;k++){
+            float a=float(k)*1.5708;
+            float diff=mod(abs(angle-a),3.14159);
+            float ray=exp(-diff*diff*12.0)*exp(-d*d*15.0)*0.35;
+            rays+=ray;
+          }
+          float alpha=clamp(core+glow+rays,0.0,1.0);
+          gl_FragColor=vec4(col*(core*2.0+glow+rays),alpha);
+        }
+      `,
+      transparent:true,
+      blending:THREE.AdditiveBlending,
+      depthWrite:false,
+      side:THREE.DoubleSide,
+    });
+
+    const plane=new THREE.Mesh(new THREE.PlaneGeometry(16,16),mat);
+    plane.position.set(x,y,z);
+    plane.lookAt(0,0,0);
+    plane.userData={namedStar:true,cardIndex:ns.card,name:ns.name};
+    scene.add(plane);
+    namedStarMeshes.push(plane);
+
+    // Label sprite using canvas texture
+    const labelCanvas=document.createElement('canvas');
+    labelCanvas.width=256;labelCanvas.height=64;
+    const lctx=labelCanvas.getContext('2d');
+    lctx.font='italic 22px Dancing Script, cursive';
+    lctx.fillStyle='rgba(240,208,144,0.85)';
+    lctx.textAlign='center';
+    lctx.fillText(ns.name+' ✦',128,40);
+    const tex=new THREE.CanvasTexture(labelCanvas);
+    const lMat=new THREE.MeshBasicMaterial({map:tex,transparent:true,depthWrite:false,blending:THREE.NormalBlending});
+    const label=new THREE.Mesh(new THREE.PlaneGeometry(40,10),lMat);
+    const norm=new THREE.Vector3(x,y,z).normalize();
+    label.position.copy(norm.multiplyScalar(492)).add(new THREE.Vector3(0,10,0));
+    label.lookAt(0,0,0);
+    scene.add(label);
+  });
+
+  // ── Moon ──
+  const moonGroup=new THREE.Group();
+  scene.add(moonGroup);
+
+  // Moon body
+  const moonGeo=new THREE.SphereGeometry(28,48,48);
+
+  // Procedural moon texture on canvas
+  const moonTexCanvas=document.createElement('canvas');
+  moonTexCanvas.width=512;moonTexCanvas.height=512;
+  const mtx=moonTexCanvas.getContext('2d');
+  // Base
+  const grad=mtx.createRadialGradient(256,200,10,256,256,256);
+  grad.addColorStop(0,'#f0ead8');
+  grad.addColorStop(0.5,'#d8cfb8');
+  grad.addColorStop(1,'#a89880');
+  mtx.fillStyle=grad;
+  mtx.fillRect(0,0,512,512);
+  // Craters
+  const craters=[
+    {x:200,y:180,r:28,depth:0.7},{x:310,y:240,r:18,depth:0.6},
+    {x:150,y:300,r:22,depth:0.65},{x:360,y:160,r:14,depth:0.5},
+    {x:270,y:350,r:20,depth:0.6},{x:420,y:280,r:16,depth:0.55},
+    {x:130,y:140,r:10,depth:0.5},{x:380,y:380,r:12,depth:0.5},
+    {x:240,y:420,r:8,depth:0.45},{x:90, y:240,r:18,depth:0.6},
+    {x:450,y:180,r:10,depth:0.5},{x:200,y:380,r:15,depth:0.55},
+  ];
+  craters.forEach(cr=>{
+    // Shadow
+    const sg=mtx.createRadialGradient(cr.x+cr.r*0.3,cr.y+cr.r*0.3,0,cr.x,cr.y,cr.r);
+    sg.addColorStop(0,`rgba(60,50,40,${cr.depth*0.6})`);
+    sg.addColorStop(0.7,`rgba(80,70,55,${cr.depth*0.3})`);
+    sg.addColorStop(1,'rgba(180,165,140,0)');
+    mtx.fillStyle=sg;
+    mtx.beginPath();mtx.arc(cr.x,cr.y,cr.r,0,Math.PI*2);mtx.fill();
+    // Rim highlight
+    mtx.strokeStyle=`rgba(255,248,230,${cr.depth*0.4})`;
+    mtx.lineWidth=1.5;
+    mtx.beginPath();mtx.arc(cr.x-cr.r*0.2,cr.y-cr.r*0.2,cr.r*0.8,Math.PI*1.1,Math.PI*1.9);mtx.stroke();
+  });
+  // Mare (dark patches)
+  const mares=[{x:220,y:220,rx:70,ry:55,a:0.18},{x:310,y:290,rx:55,ry:45,a:0.14}];
+  mares.forEach(m=>{
+    mtx.save();mtx.translate(m.x,m.y);mtx.scale(1,m.ry/m.rx);
+    const mg=mtx.createRadialGradient(0,0,0,0,0,m.rx);
+    mg.addColorStop(0,`rgba(80,72,60,${m.a})`);
+    mg.addColorStop(1,'rgba(80,72,60,0)');
+    mtx.fillStyle=mg;
+    mtx.beginPath();mtx.arc(0,0,m.rx,0,Math.PI*2);mtx.fill();
+    mtx.restore();
+  });
+
+  const moonTex=new THREE.CanvasTexture(moonTexCanvas);
+  const moonMat=new THREE.MeshStandardMaterial({
+    map:moonTex,
+    roughness:0.92,metalness:0.0,
+    emissive:new THREE.Color(0x201810),
+    emissiveIntensity:0.08,
+  });
+  const moonMesh=new THREE.Mesh(moonGeo,moonMat);
+  moonGroup.add(moonMesh);
+
+  // Moon atmosphere glow (additive halo)
+  const haloGeo=new THREE.SphereGeometry(34,32,32);
+  const haloMat=new THREE.ShaderMaterial({
+    uniforms:{},
+    vertexShader:`varying vec3 vNormal;void main(){vNormal=normalize(normalMatrix*normal);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}`,
+    fragmentShader:`varying vec3 vNormal;void main(){float f=pow(0.6-dot(vNormal,vec3(0,0,1)),3.0);gl_FragColor=vec4(0.9,0.92,0.7,f*0.35);}`,
+    side:THREE.BackSide,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false
+  });
+  moonGroup.add(new THREE.Mesh(haloGeo,haloMat));
+
+  // Moon lighting
+  const moonLight=new THREE.DirectionalLight(0xfff8e0,0.8);
+  moonLight.position.set(-1,0.5,1);
+  scene.add(moonLight);
+  const ambientLight=new THREE.AmbientLight(0x080610,1.0);
+  scene.add(ambientLight);
+
+  // Moon position in sky
+  moonGroup.position.set(180,80,-420);
+
+  // ── Milky Way band ──
+  const mwCount=3000;
+  const mwPos=new Float32Array(mwCount*3);
+  const mwCol=new Float32Array(mwCount*3);
+  for(let i=0;i<mwCount;i++){
+    const t2=Math.random()*Math.PI*2;
+    const spread=(Math.random()-0.5)*0.35; // narrow band
+    const r=480+Math.random()*30;
+    mwPos[i*3]  =r*Math.cos(t2)*Math.cos(spread);
+    mwPos[i*3+1]=r*Math.sin(spread)*3;
+    mwPos[i*3+2]=r*Math.sin(t2)*Math.cos(spread);
+    const b=0.5+Math.random()*0.5;
+    mwCol[i*3]  =b*0.7;
+    mwCol[i*3+1]=b*0.75;
+    mwCol[i*3+2]=b;
+  }
+  const mwGeo=new THREE.BufferGeometry();
+  mwGeo.setAttribute('position',new THREE.BufferAttribute(mwPos,3));
+  mwGeo.setAttribute('color',new THREE.BufferAttribute(mwCol,3));
+  const mwMat=new THREE.PointsMaterial({size:1.2,vertexColors:true,transparent:true,opacity:0.55,blending:THREE.AdditiveBlending,depthWrite:false,sizeAttenuation:true});
+  scene.add(new THREE.Points(mwGeo,mwMat));
+
+  // ── Shooting stars ──
+  const shooters=[];
+  function spawnShooter(){
+    const phi=Math.random()*Math.PI;
+    const theta=Math.random()*Math.PI*2;
+    const r=490;
+    const start=new THREE.Vector3(r*Math.sin(phi)*Math.cos(theta),r*Math.cos(phi),r*Math.sin(phi)*Math.sin(theta));
+    const dir=new THREE.Vector3(-start.x+((Math.random()-0.5)*200),-start.y-100,-start.z+((Math.random()-0.5)*200)).normalize();
+    const len=60+Math.random()*80;
+    const end=start.clone().add(dir.clone().multiplyScalar(len));
+    const points=[start,end];
+    const geo=new THREE.BufferGeometry().setFromPoints(points);
+    const mat=new THREE.LineBasicMaterial({color:0xffffff,transparent:true,opacity:0.9,blending:THREE.AdditiveBlending,linewidth:2});
+    const line=new THREE.Line(geo,mat);
+    scene.add(line);
+    shooters.push({line,life:1.0,speed:0.04+Math.random()*0.06});
+    setTimeout(spawnShooter,2500+Math.random()*5000);
+  }
+  spawnShooter();
+
+  // ── Mouse drag rotation ──
+  let isDrag=false,lastX=0,lastY=0;
+  let rotY=0,rotX=0,targetRotY=0,targetRotX=0;
+  const section=document.getElementById('constellation');
+
+  section.addEventListener('mousedown',e=>{isDrag=true;lastX=e.clientX;lastY=e.clientY;});
+  window.addEventListener('mouseup',()=>isDrag=false);
+  window.addEventListener('mousemove',e=>{
+    if(!isDrag)return;
+    targetRotY+=(e.clientX-lastX)*0.003;
+    targetRotX+=(e.clientY-lastY)*0.002;
+    targetRotX=Math.max(-1.2,Math.min(1.2,targetRotX));
+    lastX=e.clientX;lastY=e.clientY;
+  });
+
+  // Touch drag
+  let lastTX=0,lastTY=0;
+  section.addEventListener('touchstart',e=>{lastTX=e.touches[0].clientX;lastTY=e.touches[0].clientY;},{passive:true});
+  section.addEventListener('touchmove',e=>{
+    targetRotY+=(e.touches[0].clientX-lastTX)*0.004;
+    targetRotX+=(e.touches[0].clientY-lastTY)*0.003;
+    targetRotX=Math.max(-1.2,Math.min(1.2,targetRotX));
+    lastTX=e.touches[0].clientX;lastTY=e.touches[0].clientY;
+  },{passive:true});
+
+  // ── Named star click detection ──
+  const raycaster=new THREE.Raycaster();
+  const mouse=new THREE.Vector2();
+  raycaster.params.Points={threshold:8};
+
+  section.addEventListener('click',e=>{
+    if(Math.abs(targetRotY-rotY)>0.02)return; // was dragging
+    const rect=canvas.getBoundingClientRect();
+    mouse.x=((e.clientX-rect.left)/rect.width)*2-1;
+    mouse.y=-((e.clientY-rect.top)/rect.height)*2+1;
+    raycaster.setFromCamera(mouse,camera);
+    const hits=raycaster.intersectObjects(namedStarMeshes);
+    if(hits.length>0){
+      const idx=hits[0].object.userData.cardIndex;
+      closeSkyCard();
+      const card=document.getElementById('sc'+idx);
+      if(card){
+        card.style.left=e.clientX+'px';
+        card.style.top=e.clientY+'px';
+        card.classList.add('active');
+      }
+    } else {
+      closeSkyCard();
+    }
+  });
+
+  // ── Resize ──
+  window.addEventListener('resize',()=>{
+    const w=section.offsetWidth,h=section.offsetHeight;
+    renderer.setSize(w,h);
+    camera.aspect=w/h;camera.updateProjectionMatrix();
+  });
+
+  // ── Render loop ──
+  let frame=0;
+  function animate(){
+    if(!document.getElementById('sky-canvas')){return;}
+    requestAnimationFrame(animate);
+    frame++;
+    const t=frame*0.016;
+
+    // Smooth rotation
+    rotY+=(targetRotY-rotY)*0.05;
+    rotX+=(targetRotX-rotX)*0.05;
+    // Auto slow rotation when not dragging
+    if(!isDrag)targetRotY+=0.0004;
+
+    // Camera orbit (we rotate the scene instead for simplicity)
+    starField.rotation.y=rotY;
+    starField.rotation.x=rotX;
+    namedStarMeshes.forEach(m=>{
+      m.rotation.y=rotY;m.rotation.x=rotX;
+      m.material.uniforms.time.value=t;
+      // Make labels always face camera
+      m.lookAt(camera.position);
+    });
+    moonGroup.rotation.y=rotY*0.3;
+    moonGroup.rotation.x=rotX*0.3;
+    scene.children.forEach(ch=>{if(ch.isPoints&&ch!==starField)ch.rotation.y=rotY;});
+
+    // Aurora pulse
+    auroras.forEach(a=>{
+      a.material.opacity=a.userData.baseOpacity*(0.7+0.3*Math.sin(t*0.4+a.userData.phase));
+    });
+
+    // Star twinkle uniform
+    starMat.uniforms.time.value=t;
+
+    // Named star time
+    namedStarMeshes.forEach(m=>m.material.uniforms.time.value=t);
+
+    // Shooting stars
+    shooters.forEach((sh,i)=>{
+      sh.life-=sh.speed;
+      sh.line.material.opacity=sh.life*0.9;
+      if(sh.life<=0){scene.remove(sh.line);shooters.splice(i,1);}
+    });
+
+    // Moon gentle bob
+    moonGroup.position.y=80+Math.sin(t*0.15)*3;
+
+    renderer.render(scene,camera);
+  }
+  animate();
+}
 
 /* ── TYPING LETTER ── */
-const LT=`I don't know exactly how the universe works, but I believe it has a sense of humour — because it chose to bring us together over a chess game.
+const LT=`April 16th. The day you were born.
 
-Of all the ways two people could find each other, it had to be 64 squares and a handful of pieces. And somehow, that feels just right for us.
+I've been thinking about what to write all week. Not because I don't have words, but because I have too many. So I'll just say what's true.
 
-I want you to know something today, on your birthday —
+Before you, my days were fine. After you, they became something I actually look forward to.
 
-I will always be by your side.
+You did that.
 
-The miles between us don't change that. The time zones don't change that. Nothing will ever change that. I am not going anywhere. I will stick with you through everything.
+Not with grand gestures. Just by being exactly yourself. Your voice when you're telling me about something you drew. The way you send me pictures of the sky. The way you laugh at your own jokes before you even finish them.
 
-तुम जहाँ भी हो, मैं तुम्हारे साथ हूँ।
-(Wherever you are, I am with you.)
+I know the distance is hard. I know there are nights when it feels like too much. But I want you to know something I've never said clearly enough:
 
-I remember that horror movie night — when you said "Hey, can you hold my hand?" — and I would have crossed oceans right then just to be there next to you.
+I chose this. I choose it every day. Not because it's easy. Because you are worth every hard part of it.
 
-You are the most creative, caring, beautiful soul I have ever known. The way you draw with your whole heart. The way you talk to me all day — you make every ordinary moment precious.
+On the days you doubt yourself, come back here.
+On the days you feel far away, come back here.
+This page will still say the same thing.
 
-On this birthday, I promise you: I will stick with you. Through the scary movies. Through the hard days. Through all the miles and all the waiting.
+You are loved. Completely. By someone who means it.
 
-तुम मेरी हो, और मैं तुम्हारा।
-(You are mine, and I am yours.)
+तुम बहुत खास हो।
+(You are very special.)
 
-Happy Birthday, my Soren. 🌷
+So go have the most beautiful birthday.
+Eat something good. Draw something wild.
+And know that somewhere across the world,
+someone is thinking of you and smiling.
 
-Thank you for existing. The world is softer and brighter because you are in it.
-
-All my love, always —
-Chris 💕  ♟️ → 💌 → 🌏`;
+Yours,
+Chris 💕`;
 let tTimer=null,tIdx=0;
 function startTyping(){document.getElementById('typeCursor').style.display='inline-block';document.getElementById('startBtn').style.display='none';tIdx=0;document.getElementById('typed-text').textContent='';typeNext();}
-function typeNext(){if(tIdx>=LT.length){document.getElementById('replayBtn').style.display='inline-block';return;}const ch=LT[tIdx++];document.getElementById('typed-text').textContent+=ch;const el=document.getElementById('typed-text').parentElement;el.scrollTop=el.scrollHeight;const d=ch==='\n'?170:ch==='.'||ch==='—'?110:ch===','?70:Math.random()*28+18;tTimer=setTimeout(typeNext,d);}
+function typeNext(){if(tIdx>=LT.length){document.getElementById('replayBtn').style.display='inline-block';return;}const ch=LT[tIdx++];document.getElementById('typed-text').textContent+=ch;const el=document.getElementById('typed-text').parentElement;el.scrollTop=el.scrollHeight;const d=ch==='\n'?170:ch==='.'?110:ch===','?70:Math.random()*28+18;tTimer=setTimeout(typeNext,d);}
 function replayTyping(){clearTimeout(tTimer);document.getElementById('replayBtn').style.display='none';tIdx=0;document.getElementById('typed-text').textContent='';typeNext();}
 
 /* ── FLIPBOOK ── */
@@ -635,7 +1247,7 @@ let tx0=0;document.getElementById('bookWrapper').addEventListener('touchstart',e
 (()=>{const st=document.getElementById('pStage'),cur=document.getElementById('pcursor'),photos=[...st.querySelectorAll('.pp')];let mx=0,my=0,cx=0,cy=0;st.addEventListener('mousemove',e=>{const r=st.getBoundingClientRect();mx=e.clientX-r.left-r.width/2;my=e.clientY-r.top-r.height/2;cur.style.left=e.clientX+'px';cur.style.top=e.clientY+'px';});st.addEventListener('mouseleave',()=>{mx=0;my=0;});st.addEventListener('mouseenter',()=>{cur.style.display='block';});st.addEventListener('mouseleave',()=>{cur.style.display='none';mx=0;my=0;});st.addEventListener('touchmove',e=>{const r=st.getBoundingClientRect();mx=e.touches[0].clientX-r.left-r.width/2;my=e.touches[0].clientY-r.top-r.height/2;},{passive:true});function raf(){cx+=(mx-cx)*.07;cy+=(my-cy)*.07;photos.forEach(p=>{const d=parseFloat(p.dataset.d)||.05;p.style.transform=`translate(${cx*d}px,${cy*d}px)`;});requestAnimationFrame(raf);}raf();})();
 
 /* ── GARDEN ── */
-const BLOOMS=[{emoji:'🌷',title:'A Tulip for Soren',msg:'Your favourite flower. The tulip stands for perfect love — and that is exactly what you deserve, always.'},{emoji:'🌼',title:'A Daisy for You',msg:"Daisies say \"I'll never tell\" — but I'll always tell you how beautiful you are. Always. 💕"},{emoji:'🌸',title:'Cherry Blossom',msg:'These fall like poetry. Just like the way you came into my life — quietly, beautifully, completely.'},{emoji:'🌹',title:'A Rose',msg:'Deep red, like the warmth I feel every time we talk. You colour every grey day. 🌹'},{emoji:'🌻',title:'A Sunflower',msg:'You are the sunflower in my life — always facing toward the light, lifting everything around you. ☀️'},{emoji:'💐',title:'A Whole Bouquet!',msg:"If I could, I'd send you flowers every morning until the day I can give them to you in person. 💌"},{emoji:'🪷',title:'A Lotus',msg:'The lotus blooms from deep water — like our love, growing strong across every ocean between us. 🌊'},{emoji:'🌺',title:'Hibiscus',msg:'Bright, warm, full of life — just like you, Soren. Just like your laugh. 💛'},];
+const BLOOMS=[{emoji:'🌷',title:'A Tulip for Soren',msg:'Your favourite flower. The tulip stands for perfect love, and that is exactly what you deserve, always.'},{emoji:'🌼',title:'A Daisy for You',msg:"Daisies say \"I'll never tell\" but I'll always tell you how beautiful you are. Always. 💕"},{emoji:'🌸',title:'Cherry Blossom',msg:'These fall like poetry. Just like the way you came into my life, quietly, beautifully, completely.'},{emoji:'🌹',title:'A Rose',msg:'Deep red, like the warmth I feel every time we talk. You colour every grey day. 🌹'},{emoji:'🌻',title:'A Sunflower',msg:'You are the sunflower in my life, always facing toward the light, lifting everything around you. ☀️'},{emoji:'💐',title:'A Whole Bouquet!',msg:"If I could, I'd send you flowers every morning until the day I can give them to you in person. 💌"},{emoji:'🪷',title:'A Lotus',msg:'The lotus blooms from deep water, like our love, growing strong across every ocean between us. 🌊'},{emoji:'🌺',title:'Hibiscus',msg:'Bright, warm, full of life, just like you, Soren. Just like your laugh. 💛'},];
 let fCount=0;const gStage=document.getElementById('gardenStage');
 gStage.addEventListener('click',e=>{const r=gStage.getBoundingClientRect();growF(e.clientX-r.left,e.clientY-r.top);});
 function growF(x,y){fCount++;document.getElementById('gardenCtr').textContent=`${fCount} flower${fCount!==1?'s':''} grown 🌷`;const msg=BLOOMS[(fCount-1)%BLOOMS.length];const ems=['🌷','🌼','🌸','🌺','🌻','💐','🌹','🪷'];const d=document.createElement('div');d.className='fl-svg';d.style.cssText=`left:${x}px;font-size:${22+Math.random()*18}px;transform:scaleY(0);animation:fG .8s cubic-bezier(.175,.885,.32,1.275) forwards;`;d.textContent=ems[Math.floor(Math.random()*ems.length)];d.addEventListener('click',e=>{e.stopPropagation();showB(msg);});gStage.appendChild(d);if(!document.getElementById('fGStyle')){const s=document.createElement('style');s.id='fGStyle';s.textContent='@keyframes fG{from{transform:scaleY(0) translateY(8px);opacity:0}to{transform:scaleY(1) translateY(0);opacity:1}}';document.head.appendChild(s);}if(fCount<=3)setTimeout(()=>showB(msg),820);}
@@ -647,11 +1259,121 @@ function playMovie(){document.getElementById('tvPlayBtn').style.display='none';d
 
 /* ── CHESS ── */
 const IS=[[null,null,null,null,null,null,null,'BK'],[null,null,null,null,null,null,null,null],[null,null,null,null,null,null,'WQ',null],[null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,'WR']];
-const PS={WQ:'♕',WR:'♖',BK:'♚'};
 const cb=document.getElementById('chessBoard');let sel=null,solved=false;
-function buildB(){cb.innerHTML='';for(let r=0;r<8;r++)for(let c=0;c<8;c++){const el=document.createElement('div');el.className=`cell ${(r+c)%2===0?'light':'dark'}`;const p=IS[r][c];if(p){el.textContent=PS[p];el.style.color=p.startsWith('W')?'#f0d9b5':'#1a0a10';el.style.textShadow=p.startsWith('W')?'0 2px 4px #0006':'0 2px 4px #fff4';}el.addEventListener('click',()=>hClick(r,c));cb.appendChild(el);}}
+
+// Inject chess piece CSS once
+(()=>{
+  const s=document.createElement('style');
+  s.textContent=`
+    .piece-wrap{
+      width:78%;height:78%;border-radius:50%;
+      display:flex;align-items:center;justify-content:center;
+      position:relative;transform-style:preserve-3d;
+      transition:transform .2s ease,box-shadow .2s ease;
+    }
+    .cell:hover .piece-wrap{transform:translateZ(14px) scale(1.18);}
+    .cell.selected .piece-wrap{transform:translateZ(18px) scale(1.22)!important;}
+    .piece-glyph{
+      font-size:clamp(20px,3.8vw,32px);
+      line-height:1;position:relative;z-index:2;
+      filter:drop-shadow(0 3px 6px rgba(0,0,0,.5));
+    }
+    /* White pieces: ivory with gold glow */
+    .white-piece .piece-wrap{
+      background:radial-gradient(circle at 35% 30%,#fff9ee 0%,#e8d5a0 55%,#c9a84c 100%);
+      box-shadow:0 4px 12px rgba(0,0,0,.4),0 0 0 2px #d4a84888,inset 0 1px 2px rgba(255,255,255,.7);
+    }
+    .white-piece .piece-glyph{color:#6b4c10;text-shadow:0 1px 0 #fff8,0 2px 4px #0004;}
+    /* Black king: dark marble with red rim */
+    .black-piece .piece-wrap{
+      background:radial-gradient(circle at 35% 30%,#5a3040 0%,#2e1020 55%,#1a0810 100%);
+      box-shadow:0 4px 12px rgba(0,0,0,.6),0 0 0 2px #c2637a88,inset 0 1px 2px rgba(255,255,255,.15);
+    }
+    .black-piece .piece-glyph{color:#f5c0cc;text-shadow:0 0 8px #c2637a,0 2px 4px #0008;}
+    /* Highlight dot */
+    .cell.highlight::after{
+      content:'';position:absolute;
+      width:30%;height:30%;border-radius:50%;
+      background:radial-gradient(circle,#7fc970 0%,#5aaa5088 60%,transparent 100%);
+      box-shadow:0 0 12px 4px #7fc97066;
+      z-index:3;pointer-events:none;
+    }
+  `;
+  document.head.appendChild(s);
+})();
+
+function makePiece(p){
+  const isW=p.startsWith('W');
+  const glyphs={WQ:'♛',WR:'♜',BK:'♚'};
+  const wrap=document.createElement('div');
+  wrap.className=`piece-wrap`;
+  const g=document.createElement('span');
+  g.className='piece-glyph';
+  g.textContent=glyphs[p]||'?';
+  wrap.appendChild(g);
+  return {wrap,cls:isW?'white-piece':'black-piece'};
+}
+
+function buildB(){
+  cb.innerHTML='';
+  for(let r=0;r<8;r++)for(let c=0;c<8;c++){
+    const el=document.createElement('div');
+    el.className=`cell ${(r+c)%2===0?'light':'dark'}`;
+    el.style.cssText='display:flex;align-items:center;justify-content:center;position:relative;';
+    const p=IS[r][c];
+    if(p){
+      const {wrap,cls}=makePiece(p);
+      el.classList.add(cls);
+      el.appendChild(wrap);
+    }
+    el.addEventListener('click',()=>hClick(r,c));
+    cb.appendChild(el);
+  }
+}
+
 function gC(r,c){return cb.children[r*8+c];}
-function hClick(r,c){if(solved)return;const p=IS[r][c];if(sel){const[sr,sc]=sel;if(sr===2&&sc===6&&r===0&&c===6){gC(sr,sc).textContent='';const d=gC(r,c);d.textContent='♕';d.style.color='#f0d9b5';d.classList.add('check');clrH();sel=null;solved=true;document.getElementById('chessMsg').textContent='♕ Checkmate! Qg8# — Perfect! 🎉';document.getElementById('chessHint').style.display='none';setTimeout(()=>{const s=document.getElementById('chessSecret');s.classList.add('visible');s.scrollIntoView({behavior:'smooth',block:'nearest'});},900);}else if(p&&p.startsWith('W')){clrH();sel=[r,c];gC(r,c).classList.add('selected');showH(r,c);}else{clrH();sel=null;document.getElementById('chessMsg').textContent="Not quite! Think carefully — the Queen needs to deliver checkmate. ♟️";}}else{if(p&&p.startsWith('W')){sel=[r,c];gC(r,c).classList.add('selected');showH(r,c);document.getElementById('chessMsg').textContent="Good choice! Now where should it go? 🤔";}}}
+
+function hClick(r,c){
+  if(solved)return;
+  const p=IS[r][c];
+  if(sel){
+    const[sr,sc]=sel;
+    if(sr===2&&sc===6&&r===0&&c===6){
+      // Correct move: Queen from g6 to g8
+      const src=gC(sr,sc);src.innerHTML='';src.className=src.className.replace('white-piece','');
+      const dst=gC(r,c);
+      const {wrap}=makePiece('WQ');
+      dst.classList.add('white-piece');
+      dst.appendChild(wrap);
+      dst.classList.add('check');
+      clrH();sel=null;solved=true;
+      document.getElementById('chessMsg').textContent='♛ Checkmate! Qg8# Perfect! 🎉';
+      document.getElementById('chessHint').style.display='none';
+      // Winning flash
+      dst.style.animation='winFlash 0.6s ease 3';
+      if(!document.getElementById('wfStyle')){
+        const s=document.createElement('style');s.id='wfStyle';
+        s.textContent='@keyframes winFlash{0%,100%{background:#e0303088}50%{background:#f0d09066}}';
+        document.head.appendChild(s);
+      }
+      setTimeout(()=>{
+        const sec=document.getElementById('chessSecret');
+        sec.classList.add('visible');
+        sec.scrollIntoView({behavior:'smooth',block:'nearest'});
+      },900);
+    } else if(p&&p.startsWith('W')){
+      clrH();sel=[r,c];gC(r,c).classList.add('selected');showH(r,c);
+    } else {
+      clrH();sel=null;
+      document.getElementById('chessMsg').textContent="Not quite! Think carefully, the Queen needs to deliver checkmate. ♟️";
+    }
+  } else {
+    if(p&&p.startsWith('W')){
+      sel=[r,c];gC(r,c).classList.add('selected');showH(r,c);
+      document.getElementById('chessMsg').textContent="Good choice! Now where should it go? 🤔";
+    }
+  }
+}
 function showH(r,c){if(IS[r][c]==='WQ')gC(0,6).classList.add('highlight');if(IS[r][c]==='WR')for(let i=0;i<8;i++)gC(i,7).classList.add('highlight');}
 function clrH(){cb.querySelectorAll('.highlight,.selected').forEach(c=>c.classList.remove('highlight','selected'));}
 buildB();
@@ -672,7 +1394,45 @@ function setTool(t){dTool=t;document.getElementById('penBtn').classList.toggle('
 function clearCanvas(){dctx.fillStyle='#fff9f5';dctx.fillRect(0,0,dc.width,dc.height);dctx.save();dctx.font='italic 14px Cormorant Garamond,serif';dctx.fillStyle='#e8a0b026';dctx.textAlign='center';dctx.fillText('Draw something beautiful, Soren 🌸',dc.width/2/(window.devicePixelRatio||1),dc.height/2/(window.devicePixelRatio||1));dctx.restore();}
 function saveCanvas(){const l=document.createElement('a');l.download='soren-drawing.png';l.href=dc.toDataURL();l.click();}
 
-/* ── LIGHTBOX ── */
+/* ── DRAWINGS GALLERY (23 pieces) ── */
+(()=>{
+  const captions=[
+    'The one that started it all ✨','Something only you could see 🌸',
+    'I stared at this for a long time 💕','This one made me realise how talented you are 🎨',
+    'Every line chosen on purpose 🌷','The colours you picked here. Wow. 🌈',
+    'This tells a whole story without words 📖','I love how brave this one is 🔥',
+    'Quiet and beautiful, just like you 🌙','This is my personal favourite 💛',
+    'The detail in this is unreal ✏️','You were in a good mood when you drew this, I can tell 😊',
+    'Raw and real and so you 🤍','Something about this one always hits different 🌊',
+    'I could look at this forever 🪷','The mood in this is everything 🌫️',
+    'This one feels like a feeling I can\'t name 💫','Bold. Fearless. You. 🌺',
+    'Gentle and powerful at the same time 🌿','This belongs in a real gallery someday 🖼️',
+    'The one I keep coming back to 🌷','You were somewhere else when you made this ✨',
+    'Last piece. Not least. Never least. 💌'
+  ];
+  const placeholderIcons=['🎨','🖌️','✏️','🖼️','🌷','🎭','🌸','💐','🎨','🖌️','✏️','🌼','🎨','🖌️','✏️','🖼️','🌺','🎨','🖌️','✏️','🎭','🌸','💌'];
+  const grid=document.getElementById('drawingsGrid');
+  if(!grid)return;
+  for(let i=1;i<=23;i++){
+    const cap=captions[i-1]||`Drawing #${i}`;
+    const icon=placeholderIcons[i-1]||'🎨';
+    const frame=document.createElement('div');
+    frame.className='df';
+    frame.onclick=()=>openLightbox(`drawings/drawing${i}.jpg`);
+    frame.innerHTML=`
+      <img src="drawings/drawing${i}.jpg" alt="Soren drawing ${i}"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="dph" style="display:none">
+        <span>${icon}</span>
+        <p>Add drawing${i}.jpg<br>to drawings/ folder</p>
+      </div>
+      <div class="dc-label">${cap}</div>
+    `;
+    grid.appendChild(frame);
+  }
+  // Re-run tilt engine on new frames
+  if(window._tiltInit) window._tiltInit();
+})();
 function openLightbox(src){const i=document.getElementById('lightbox-img');i.src=src;document.getElementById('lightbox').classList.add('active');document.body.style.overflow='hidden';}
 function closeLightbox(){document.getElementById('lightbox').classList.remove('active');document.body.style.overflow='';}
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLightbox();});
@@ -680,6 +1440,134 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLightbox();});
 /* ── CONFETTI ── */
 function launchConfetti(){const em=['🌷','🌼','🌸','💕','💖','✨','🎉','🎂','🌹','💝','⭐','🌟'];for(let i=0;i<72;i++){setTimeout(()=>{const el=document.createElement('div');el.textContent=em[Math.floor(Math.random()*em.length)];el.style.cssText=`position:fixed;z-index:9999;pointer-events:none;font-size:${17+Math.random()*22}px;left:${Math.random()*100}vw;top:-40px;animation:cF ${2.5+Math.random()*3}s ease forwards;`;document.body.appendChild(el);setTimeout(()=>el.remove(),6000);},i*52);}}
 if(!document.getElementById('cFS')){const s=document.createElement('style');s.id='cFS';s.textContent='@keyframes cF{0%{transform:translateY(0) rotate(0) scale(.5);opacity:0}10%{opacity:1}90%{opacity:.8}100%{transform:translateY(110vh) rotate(720deg) scale(1.2);opacity:0}}';document.head.appendChild(s);}
+
+/* ══════════════════════════════════════
+   3D TILT ENGINE
+══════════════════════════════════════ */
+(function(){
+  // Settings per selector: [maxTiltDeg, scaleFactor, zTranslate]
+  const TILT_TARGETS = [
+    { sel: '.travel-card',  max: 18, scale: 1.06, z: 20, shine: true  },
+    { sel: '.rc',           max: 16, scale: 1.05, z: 18, shine: true  },
+    { sel: '.df',           max: 14, scale: 1.04, z: 16, shine: true  },
+    { sel: '.bloom-card',   max: 10, scale: 1.03, z: 14, shine: true  },
+    { sel: '.hand-moment',  max: 8,  scale: 1.02, z: 10, shine: false },
+    { sel: '.chess-secret', max: 8,  scale: 1.02, z: 10, shine: true  },
+    { sel: '.horror-tv',    max: 6,  scale: 1.01, z: 8,  shine: false },
+    { sel: '.paper',        max: 5,  scale: 1.01, z: 6,  shine: true  },
+    { sel: '.book-wrapper', max: 4,  scale: 1.01, z: 4,  shine: false },
+  ];
+
+  function addShine(el) {
+    if (el.querySelector('.tilt-shine')) return;
+    const s = document.createElement('div');
+    s.className = 'tilt-shine';
+    el.appendChild(s);
+    return s;
+  }
+
+  function applyTilt(el, cfg) {
+    // Wrap in perspective container if not already
+    if (!el.dataset.tiltInit) {
+      el.dataset.tiltInit = '1';
+      el.style.transformStyle = 'preserve-3d';
+      if (cfg.shine) addShine(el);
+    }
+    const shine = el.querySelector('.tilt-shine');
+
+    el.addEventListener('mousemove', function(e) {
+      const r = el.getBoundingClientRect();
+      const cx = r.left + r.width / 2;
+      const cy = r.top + r.height / 2;
+      const dx = (e.clientX - cx) / (r.width / 2);   // -1 to 1
+      const dy = (e.clientY - cy) / (r.height / 2);  // -1 to 1
+      const rotX = -dy * cfg.max;
+      const rotY =  dx * cfg.max;
+
+      el.style.transform = `perspective(700px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale(${cfg.scale}) translateZ(${cfg.z}px)`;
+      el.style.boxShadow = `
+        ${-rotY * 1.5}px ${rotX * 1.5 + 20}px 40px rgba(0,0,0,0.28),
+        0 ${cfg.z}px ${cfg.z * 2}px rgba(194,99,122,0.18)
+      `;
+
+      if (shine) {
+        const sx = ((dx + 1) / 2) * 100;
+        const sy = ((dy + 1) / 2) * 100;
+        shine.style.background = `radial-gradient(circle at ${sx}% ${sy}%, rgba(255,255,255,0.22) 0%, transparent 60%)`;
+        shine.style.opacity = '1';
+      }
+    });
+
+    el.addEventListener('mouseleave', function() {
+      el.style.transform = '';
+      el.style.boxShadow = '';
+      if (shine) shine.style.opacity = '0';
+    });
+
+    // Touch support
+    el.addEventListener('touchmove', function(e) {
+      const t = e.touches[0];
+      const r = el.getBoundingClientRect();
+      const cx = r.left + r.width / 2;
+      const cy = r.top + r.height / 2;
+      const dx = (t.clientX - cx) / (r.width / 2);
+      const dy = (t.clientY - cy) / (r.height / 2);
+      const rotX = -dy * (cfg.max * 0.5);
+      const rotY =  dx * (cfg.max * 0.5);
+      el.style.transform = `perspective(700px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale(${cfg.scale})`;
+    }, {passive:true});
+
+    el.addEventListener('touchend', function() {
+      el.style.transform = '';
+    });
+  }
+
+  function initTilts() {
+    TILT_TARGETS.forEach(cfg => {
+      document.querySelectorAll(cfg.sel).forEach(el => applyTilt(el, cfg));
+    });
+  }
+
+  // Init now and also after any new elements (e.g. chess secret reveal)
+  initTilts();
+  // Re-init on DOM changes (catches dynamically revealed cards)
+  const mo = new MutationObserver(() => initTilts());
+  mo.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] });
+
+  // Global mouse tilt for hero name
+  const heroTitle = document.querySelector('.hero-title');
+  if (heroTitle) {
+    document.getElementById('hero').addEventListener('mousemove', function(e) {
+      const r = this.getBoundingClientRect();
+      const dx = (e.clientX - r.left - r.width/2) / r.width;
+      const dy = (e.clientY - r.top - r.height/2) / r.height;
+      heroTitle.style.transform = `perspective(600px) rotateX(${-dy*8}deg) rotateY(${dx*8}deg)`;
+      heroTitle.style.textShadow = `${-dx*12}px ${-dy*12}px 30px rgba(194,99,122,0.4)`;
+    });
+    document.getElementById('hero').addEventListener('mouseleave', function() {
+      heroTitle.style.transform = '';
+      heroTitle.style.textShadow = '';
+    });
+  }
+
+  // 3D floating for star popups
+  document.querySelectorAll('.popup').forEach(p => {
+    p.style.transformStyle = 'preserve-3d';
+    p.style.transform = 'translateZ(30px)';
+  });
+
+  // Scroll-based 3D parallax for section titles
+  function titleParallax() {
+    document.querySelectorAll('.section-title').forEach(t => {
+      const rect = t.getBoundingClientRect();
+      const center = window.innerHeight / 2;
+      const dist = (rect.top + rect.height/2 - center) / center;
+      t.style.transform = `perspective(800px) translateZ(${Math.abs(dist) * -20}px)`;
+    });
+  }
+  window.addEventListener('scroll', titleParallax, { passive: true });
+
+})();
 </script>
 </body>
 </html>
