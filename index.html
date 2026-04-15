@@ -172,6 +172,8 @@ section{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction
   font-size:11px;color:var(--gold-light);
   white-space:nowrap;opacity:.7;pointer-events:none;
 }
+.sky-popup{display:none;}
+.sky-sp.active .sky-popup{display:block;}
 .sky-popup{
   display:none;
   position:absolute;
@@ -189,10 +191,7 @@ section{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction
 .sky-popup.bl{top:30px;left:50%;transform:translateX(-50%);}
 .sky-popup.le{right:30px;top:50%;transform:translateY(-50%);}
 .sky-popup.ri{left:30px;top:50%;transform:translateY(-50%);}
-.sky-sp:hover .sky-popup{
-  display:block;
-  animation:pIn .35s cubic-bezier(.175,.885,.32,1.275);
-}
+
 @keyframes pIn{from{opacity:0;transform:translateX(-50%) scale(.75)}to{opacity:1;transform:translateX(-50%) scale(1)}}
 .sky-popup h4{font-family:'Playfair Display',serif;font-size:14px;color:var(--rose);margin-bottom:8px;font-style:italic;}
 .sky-popup p{font-size:12px;color:#f5dce4cc;line-height:1.75;font-style:italic;}
@@ -491,7 +490,7 @@ section{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction
         <div class="sky-popup le"><h4>What Comes Next</h4><p>One day this is a story we tell in person. Over food. Probably laughing. I cannot wait. 🌏</p></div>
       </div>
     </div>
-    <p class="sky-cap">Hover over the glowing stars, each one holds a memory ✨</p>
+    <p class="sky-cap">Tap the stars… each one holds a memory ✨ ✨</p>
   </div>
 </section>
 
@@ -770,7 +769,6 @@ document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
    MUSIC — real <audio> element
    File: tera-sang-yaara.mp3 (in same folder as index.html on GitHub)
 ══════════════════════════════════════ */
-
 const audio = document.getElementById('bgAudio');
 let musicStarted = false;
 
@@ -788,20 +786,7 @@ function toggleMusic() {
     document.getElementById('musicBars').classList.remove('playing');
   }
 }
-// Auto-start on first interaction (mobile + desktop)
-function startMusicOnce() {
-  if (!musicStarted) {
-    audio.play().then(() => {
-      document.getElementById('playBtn').textContent = '⏸';
-      document.getElementById('musicBars').classList.add('playing');
-      musicStarted = true;
-    }).catch(() => {});
-  }
-}
 
-// Trigger on first tap/click anywhere
-document.addEventListener('click', startMusicOnce, { once: true });
-document.addEventListener('touchstart', startMusicOnce, { once: true });
 // Sync bars if audio ends (shouldn't with loop, but just in case)
 audio.addEventListener('ended', () => {
   document.getElementById('playBtn').textContent = '▶';
@@ -1175,6 +1160,71 @@ if(!document.getElementById('cFS')){const s=document.createElement('style');s.id
     },{passive:true});
   }
 })();
+
+// === AUTO MUSIC START ===
+const audio = document.getElementById('bgAudio');
+let musicStarted = false;
+
+function startMusicOnce() {
+  if (!musicStarted) {
+    audio.play().then(() => {
+      document.getElementById('playBtn').textContent = '⏸';
+      document.getElementById('musicBars').classList.add('playing');
+      musicStarted = true;
+    }).catch(()=>{});
+  }
+}
+
+document.addEventListener('click', startMusicOnce, { once: true });
+document.addEventListener('touchstart', startMusicOnce, { once: true });
+
+// === SKY CLICK FIX ===
+document.querySelectorAll(".sky-sp").forEach(star => {
+  star.addEventListener("click", (e) => {
+    e.stopPropagation();
+    document.querySelectorAll(".sky-sp").forEach(s => s.classList.remove("active"));
+    star.classList.add("active");
+  });
+});
+
+document.addEventListener("click", () => {
+  document.querySelectorAll(".sky-sp").forEach(s => s.classList.remove("active"));
+});
+
+// === CHESS FIX ===
+let selected = null;
+
+function handleCellClick(cell, piece, row, col) {
+  const msg = document.getElementById("chessMsg");
+
+  if (!selected && piece === "♖") {
+    selected = { row, col };
+    cell.classList.add("selected");
+    msg.textContent = "Rook selected. Finish the game.";
+    return;
+  }
+
+  if (selected) {
+    const target = cell.textContent;
+
+    if (target === "♚") {
+      cell.textContent = "♖";
+
+      document.querySelectorAll(".cell").forEach(c => {
+        if (c !== cell && c.textContent === "♖") c.textContent = "";
+      });
+
+      msg.textContent = "Checkmate. You got it.";
+      document.getElementById("chessSecret").classList.add("visible");
+    } else {
+      msg.textContent = "Not quite. Think simple.";
+    }
+
+    selected = null;
+    document.querySelectorAll(".cell").forEach(c => c.classList.remove("selected"));
+  }
+}
+
 </script>
 </body>
 </html>
