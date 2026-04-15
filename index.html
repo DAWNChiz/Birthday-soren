@@ -398,7 +398,7 @@ section{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction
 <canvas id="particle-canvas"></canvas>
 
 <!-- HIDDEN AUDIO -->
-<audio id="bgAudio" loop preload="none">
+<audio id="bgAudio" loop preload="auto" playsinline>
   <source src="tera-sang-yaara.mp3" type="audio/mpeg">
 </audio>
 
@@ -770,6 +770,7 @@ document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
    MUSIC — real <audio> element
    File: tera-sang-yaara.mp3 (in same folder as index.html on GitHub)
 ══════════════════════════════════════ */
+
 const audio = document.getElementById('bgAudio');
 let musicStarted = false;
 
@@ -787,7 +788,20 @@ function toggleMusic() {
     document.getElementById('musicBars').classList.remove('playing');
   }
 }
+// Auto-start on first interaction (mobile + desktop)
+function startMusicOnce() {
+  if (!musicStarted) {
+    audio.play().then(() => {
+      document.getElementById('playBtn').textContent = '⏸';
+      document.getElementById('musicBars').classList.add('playing');
+      musicStarted = true;
+    }).catch(() => {});
+  }
+}
 
+// Trigger on first tap/click anywhere
+document.addEventListener('click', startMusicOnce, { once: true });
+document.addEventListener('touchstart', startMusicOnce, { once: true });
 // Sync bars if audio ends (shouldn't with loop, but just in case)
 audio.addEventListener('ended', () => {
   document.getElementById('playBtn').textContent = '▶';
